@@ -38,22 +38,28 @@ jobs:
 
       # 4. เริ่มการสแกนด้วย SonarCloud
       - name: Begin SonarCloud Analysis
+        working-directory: ./Demo-API
         run: |
             dotnet tool install --global dotnet-sonarscanner
             export PATH="$PATH:$HOME/.dotnet/tools"
-            dotnet sonarscanner begin /k:"${{ env.SONAR_PROJECTKEY }}" /o:"${{ env.SONAR_ORGANIZATION }}" /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="${{ env.SONAR_HOST_URL }}"
+            dotnet sonarscanner begin /k:"${{ env.SONAR_PROJECTKEY }}" /o:"${{ env.SONAR_ORGANIZATION }}" /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="${{ env.SONAR_HOST_URL }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml"
 
       # 5. Build Project
       - name: Build the project
+        working-directory: ./Demo-API
         run: dotnet build --no-incremental --configuration Release
 
       # 6. (Optional) Run Tests
-      - name: Run tests
-        run: dotnet test --no-build --verbosity normal || true
+      - name: Run tests with coverage
+        working-directory: ./Demo-API
+        run: dotnet test --no-build --collect:"XPlat Code Coverage" --results-directory TestResults || true
 
       # 7. จบการสแกนและส่งผลไปยัง SonarCloud
       - name: End SonarCloud Analysis
-        run: dotnet sonarscanner end /d:sonar.token="${{ env.SONAR_TOKEN }}"
+        working-directory: ./Demo-API
+        run: |
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet sonarscanner end /d:sonar.token="${{ env.SONAR_TOKEN }}"
 
       # 8. ตรวจสอบสถานะ Quality Gate
       - name: Check Quality Gate status
