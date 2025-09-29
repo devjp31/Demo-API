@@ -31,7 +31,7 @@ jobs:
             -Dsonar.projectKey=devjp31_Demo-API
             -Dsonar.host.url=https://sonarcloud.io
 
-      # 3. ตรวจสอบสถานะ Quality Gate จาก SonarCloud API
+      # 3. ตรวจสอบสถานะ Quality Gate จาก SonarCloud API 
       - name: Check Quality Gate status
         id: qualitygate
         run: |
