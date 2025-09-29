@@ -39,8 +39,9 @@ jobs:
       # 4. เริ่มการสแกนด้วย SonarCloud
       - name: Begin SonarCloud Analysis
         run: |
-          dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin /k:"${{ env.SONAR_PROJECTKEY }}" /o:"${{ env.SONAR_ORGANIZATION }}" /d:sonar.login="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="${{ env.SONAR_HOST_URL }}"
+            dotnet tool install --global dotnet-sonarscanner
+            export PATH="$PATH:$HOME/.dotnet/tools"
+            dotnet sonarscanner begin /k:"${{ env.SONAR_PROJECTKEY }}" /o:"${{ env.SONAR_ORGANIZATION }}" /d:sonar.token="${{ env.SONAR_TOKEN }}" /d:sonar.host.url="${{ env.SONAR_HOST_URL }}"
 
       # 5. Build Project
       - name: Build the project
@@ -52,7 +53,7 @@ jobs:
 
       # 7. จบการสแกนและส่งผลไปยัง SonarCloud
       - name: End SonarCloud Analysis
-        run: dotnet sonarscanner end /d:sonar.login="${{ env.SONAR_TOKEN }}"
+        run: dotnet sonarscanner end /d:sonar.token="${{ env.SONAR_TOKEN }}"
 
       # 8. ตรวจสอบสถานะ Quality Gate
       - name: Check Quality Gate status
