@@ -11,7 +11,7 @@ on:
 jobs:
   sonarcloud:
     name: SonarCloud Scan, Build, and Generate Report
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
