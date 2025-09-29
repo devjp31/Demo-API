@@ -42,12 +42,14 @@ jobs:
           dotnet tool install --global dotnet-sonarscanner
           export PATH="$PATH:$HOME/.dotnet/tools"
           dotnet sonarscanner begin \
-            /k:"${{ env.SONAR_PROJECTKEY }}" \
-            /o:"${{ env.SONAR_ORGANIZATION }}" \
-            /d:sonar.token="${{ env.SONAR_TOKEN }}" \
-            /d:sonar.host.url="${{ env.SONAR_HOST_URL }}" \
-            /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml" \
-            /d:sonar.exclusions="**/bin/**,**/obj/**"
+          /k:"${{ env.SONAR_PROJECTKEY }}" \
+          /o:"${{ env.SONAR_ORGANIZATION }}" \
+          /d:sonar.token="${{ env.SONAR_TOKEN }}" \
+          /d:sonar.host.url="${{ env.SONAR_HOST_URL }}" \
+          /d:sonar.projectBaseDir="." \
+          /d:sonar.cs.opencover.reportsPaths="**/coverage.cobertura.xml" \
+          /d:sonar.inclusions="Controllers/**/*.cs,Program.cs,WeatherForecast.cs" \
+          /d:sonar.exclusions="**/bin/**,**/obj/**"
 
       # 5. Build Project
       - name: Build the project
