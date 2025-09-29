@@ -35,9 +35,11 @@ jobs:
       # 3. ตรวจสอบสถานะ Quality Gate จาก SonarCloud API 
       - name: Check Quality Gate status
         id: qualitygate
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           echo "Checking SonarCloud Quality Gate status..."
-          response=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" \
+          response=$(curl -s -u "$SONAR_TOKEN:" \
             "https://sonarcloud.io/api/qualitygates/project_status?projectKey=devjp31_Demo-API")
 
           echo "Response: $response"
